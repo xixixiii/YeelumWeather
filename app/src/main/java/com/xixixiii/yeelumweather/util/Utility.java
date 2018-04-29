@@ -2,9 +2,9 @@ package com.xixixiii.yeelumweather.util;
 
 import android.text.TextUtils;
 
-import com.xixixiii.yeelumweather.stroage.db.City;
-import com.xixixiii.yeelumweather.stroage.db.County;
-import com.xixixiii.yeelumweather.stroage.db.Province;
+import com.xixixiii.yeelumweather.storage.db.City;
+import com.xixixiii.yeelumweather.storage.db.County;
+import com.xixixiii.yeelumweather.storage.db.Province;
 
 import org.json.JSONArray;
 import org.json.JSONException;

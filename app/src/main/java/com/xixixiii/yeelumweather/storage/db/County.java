@@ -1,4 +1,4 @@
-package com.xixixiii.yeelumweather.stroage.db;
+package com.xixixiii.yeelumweather.storage.db;
 
 import org.litepal.crud.DataSupport;
 

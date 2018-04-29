@@ -5,9 +5,9 @@
     <version value="1"/>n
 
     <list>
-        <mapping class="com.xixixiii.yeelumweather.android.db.Province"/>
-        <mapping class="com.xixixiii.yeelumweather.android.db.City"/>
-        <mapping class="com.xixixiii.yeelumweather.android.db.County"/>
+        <mapping class="com.xixixiii.yeelumweather.storage.db.Province"/>
+        <mapping class="com.xixixiii.yeelumweather.storage.db.City"/>
+        <mapping class="com.xixixiii.yeelumweather.storage.db.County"/>
     </list>
 
 </litepal>

@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,9 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.xixixiii.yeelumweather.R;
-import com.xixixiii.yeelumweather.stroage.db.City;
-import com.xixixiii.yeelumweather.stroage.db.County;
-import com.xixixiii.yeelumweather.stroage.db.Province;
+import com.xixixiii.yeelumweather.storage.db.City;
+import com.xixixiii.yeelumweather.storage.db.County;
+import com.xixixiii.yeelumweather.storage.db.Province;
 import com.xixixiii.yeelumweather.util.HttpUtil;
 import com.xixixiii.yeelumweather.util.Utility;
 
@@ -158,7 +157,7 @@ public class ChooseAreaFragment extends Fragment {
             }
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
-            currentLevel = LEVEL_CITY;
+            currentLevel = LEVEL_COUNTY;
         }else {
             int provinceCode = selectedProvince.getProvinceCode();
             int cityCode = selectedCity.getCityCode();
