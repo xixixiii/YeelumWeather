@@ -16,8 +16,6 @@ public class Weather {
 
     public Update update;
 
-    public LifeStyle lifeStyle;
-
     public Now now;
 
     @SerializedName("daily_forecast")

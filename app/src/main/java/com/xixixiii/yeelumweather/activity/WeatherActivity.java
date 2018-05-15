@@ -1,5 +1,6 @@
 package com.xixixiii.yeelumweather.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.xixixiii.yeelumweather.R;
 import com.xixixiii.yeelumweather.gson.Forecast;
 import com.xixixiii.yeelumweather.gson.Weather;
+import com.xixixiii.yeelumweather.service.AutoUpdateService;
 import com.xixixiii.yeelumweather.util.HttpUtil;
 import com.xixixiii.yeelumweather.util.Utility;
 
@@ -51,13 +53,6 @@ public class WeatherActivity extends AppCompatActivity {
 
     private LinearLayout forecastLayout;
 
-    private TextView comfortText;
-
-    private TextView carWashText;
-
-    private TextView dressSuggestionText;
-
-    private TextView sportText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,25 +65,21 @@ public class WeatherActivity extends AppCompatActivity {
         temperatureText = findViewById(R.id.temperature_text);
         weatherInfoText = findViewById(R.id.weather_info_text);
         forecastLayout = findViewById(R.id.forecast_layout);
-        comfortText = findViewById(R.id.comfort_text);
-        carWashText = findViewById(R.id.car_wash_text);
-        dressSuggestionText = findViewById(R.id.dress_suggestion_text);
-        sportText = findViewById(R.id.sport_text);
         swipeRefresh = findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
         drawerLayout = findViewById(R.id.drawer_layout);
         navButton = findViewById(R.id.nav_button);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
+        final String weatherId;
         if (weatherString != null) {
             //有缓存时直接解析天气
             Weather weather = Utility.handleWeatherResponse(weatherString);
-            mWeatherId = weather.basic.countyName;
+            weatherId = weather.basic.countyName;
             showWeatherInfo(weather);
         } else {
             //无缓存时去服务器查询天气
-            mWeatherId = getIntent().getStringExtra("weather_id");
-//            String weatherId = getIntent().getStringExtra("weather_id");
+            weatherId = getIntent().getStringExtra("weather_id");
             weatherLayout.setVisibility(ScrollView.INVISIBLE);
             requestWeather(mWeatherId);
         }
@@ -96,7 +87,7 @@ public class WeatherActivity extends AppCompatActivity {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                requestWeather(mWeatherId);
+                requestWeather(weatherId);
             }
         });
 
@@ -129,7 +120,6 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
-//                Log.d("WeatherActivity", responseText);
                 final Weather weather = Utility.handleWeatherResponse(responseText);
                 runOnUiThread(new Runnable() {
                     @Override
@@ -141,7 +131,7 @@ public class WeatherActivity extends AppCompatActivity {
                             mWeatherId = weather.basic.countyName;
                             showWeatherInfo(weather);
                         } else {
-                            Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(WeatherActivity.this, "获取天气信息失败" + "错误代码： " + weather.status, Toast.LENGTH_SHORT).show();
                         }
                         swipeRefresh.setRefreshing(false);
                     }
@@ -176,14 +166,8 @@ public class WeatherActivity extends AppCompatActivity {
             infoText.setText(forecast.info);
             forecastLayout.addView(view);
         }
-//        String comfort = "舒适度" + weather.lifeStyle.comfort.info;
-//        String carWash = "洗车指数" + weather.lifeStyle.carWash.info;
-//        String dressSuggestion = "穿衣指数" + weather.lifeStyle.dressSuggestion.info;
-//        String sport = "运动建议" + weather.lifeStyle.sport.info;
-//        comfortText.setText(comfort);
-//        carWashText.setText(carWash);
-//        dressSuggestionText.setText(dressSuggestion);
-//        sportText.setText(sport);
         weatherLayout.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 }

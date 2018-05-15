@@ -32,8 +32,6 @@
 
                     <include layout="@layout/forecast" />
 
-                    <include layout="@layout/lifestyle" />
-
                 </LinearLayout>
 
             </ScrollView>
